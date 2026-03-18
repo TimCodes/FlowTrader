@@ -44,3 +44,34 @@ export {
   getRedisInfo,
   type RedisClientOptions,
 } from "./redis.js";
+
+// Redis Stream helpers
+export {
+  // Publish functions
+  publishOrderBook,
+  publishTrade,
+  publishL3Order,
+  publishCatalyst,
+  publishFeatures,
+  publishOrderFlowSignal,
+  publishCatalystSignal,
+  publishDecision,
+  publishExecution,
+  publishEvent,
+  // Consumer group management
+  createConsumerGroup,
+  ensureConsumerGroups,
+  // Reading/consuming
+  readGroup,
+  acknowledgeMessages,
+  getPendingMessages,
+  claimPendingMessages,
+  // Stream utilities
+  getStreamInfo,
+  trimStream,
+  // Types
+  type StreamEvent,
+  type StreamMessage,
+  type ConsumerGroupConfig,
+  type ReadGroupOptions,
+} from "./streams.js";
