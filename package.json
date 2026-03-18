@@ -1,0 +1,31 @@
+{
+  "name": "trading-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Multi-agent LangGraph trading system — IBKR futures + Kraken crypto",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "dev": "npm run dev --workspaces --if-present",
+    "lint": "eslint packages/*/src --ext .ts",
+    "typecheck": "tsc --build packages/*/tsconfig.json",
+    "clean": "rm -rf packages/*/dist",
+    "db:migrate": "npm run migrate --workspace=@trading/storage",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop all",
+    "pm2:logs": "pm2 logs"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "eslint": "^9.5.0",
+    "tsx": "^4.15.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

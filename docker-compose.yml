@@ -1,0 +1,67 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: trading-redis
+    ports:
+      - "6379:6379"
+    command: >
+      redis-server
+        --maxmemory 6gb
+        --maxmemory-policy allkeys-lru
+        --save ""
+        --appendonly no
+    volumes:
+      - redis_data:/data
+    networks:
+      - trading-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 6.5G
+        reservations:
+          memory: 1G
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg16
+    container_name: trading-tsdb
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: trading
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-trading_dev}
+      POSTGRES_DB: trading
+    volumes:
+      - tsdb_data:/var/lib/postgresql/data
+      - ./packages/storage/migrations:/docker-entrypoint-initdb.d
+    networks:
+      - trading-net
+    shm_size: "2g"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trading"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 512M
+
+networks:
+  trading-net:
+    driver: bridge
+    name: trading-network
+
+volumes:
+  redis_data:
+  tsdb_data:

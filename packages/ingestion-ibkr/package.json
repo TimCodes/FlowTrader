@@ -1,0 +1,8 @@
+{
+  "name": "@trading/ingestion-ibkr",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "scripts": { "build": "tsc", "dev": "tsx watch src/index.ts", "start": "node dist/index.js" },
+  "dependencies": { "@trading/types": "*", "@stoqey/ib": "^1.4.0", "ioredis": "^5.4.0" }
+}

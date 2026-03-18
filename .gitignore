@@ -1,0 +1,31 @@
+node_modules/
+dist/
+.env
+*.log
+
+# Docker volumes
+redis_data/
+tsdb_data/
+
+# Models (large binary files — use Git LFS or store separately)
+models/*.onnx
+models/*.bin
+models/*.safetensors
+
+# PM2
+.pm2/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Training data (too large for git)
+data/raw/
+data/processed/
+
+# Build artifacts
+*.tsbuildinfo

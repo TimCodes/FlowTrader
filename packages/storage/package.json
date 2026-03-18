@@ -1,0 +1,8 @@
+{
+  "name": "@trading/storage",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "scripts": { "build": "tsc", "dev": "tsx watch src/index.ts", "start": "node dist/writer.js", "migrate": "tsx src/migrate.ts" },
+  "dependencies": { "@trading/types": "*", "drizzle-orm": "^0.31.0", "postgres": "^3.4.0", "ioredis": "^5.4.0" }
+}
