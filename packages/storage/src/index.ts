@@ -1,12 +1,24 @@
 /**
  * @trading/storage
  *
- * Drizzle ORM schema definitions and database utilities
- * for the TimescaleDB time-series storage layer.
+ * TimescaleDB storage layer:
+ * - Database connection management
+ * - Migration runner and verification
+ * - Drizzle ORM schema (coming in Story 1.5)
+ * - Batch writer service
  */
 
-export { main } from "./writer.js";
+// Database connection utilities
+export {
+  getDb,
+  closeDb,
+  checkDbHealth,
+  getDbInfo,
+  getTableStats,
+} from "./db.js";
 
-// TODO: Export Drizzle schema definitions
-// export { schema } from "./schema.js";
-// export { db } from "./client.js";
+// Migration utilities
+export { verifySchema } from "./migrate.js";
+
+// Writer service
+export { main as startWriter } from "./writer.js";
