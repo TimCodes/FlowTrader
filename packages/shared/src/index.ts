@@ -75,3 +75,12 @@ export {
   type ConsumerGroupConfig,
   type ReadGroupOptions,
 } from "./streams.js";
+
+// Health check server
+export {
+  HealthCheckServer,
+  createHealthCheckServer,
+  type ServiceHealth,
+  type HealthResponse,
+  type HealthChecker,
+} from "./health.js";
