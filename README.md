@@ -1,6 +1,6 @@
-# Multi-Agent Trading System
+# FlowTrader
 
-LangGraph-orchestrated trading system running locally on Alienware Aurora R16 (RTX 4090, 24GB VRAM).
+LangGraph-orchestrated multi-agent trading system running locally on Alienware Aurora R16 (RTX 4090, 24GB VRAM).
 
 ## Architecture
 
@@ -59,7 +59,7 @@ LangGraph-orchestrated trading system running locally on Alienware Aurora R16 (R
 ```bash
 # 1. Clone and install
 git clone <repo-url>
-cd trading-system
+cd FlowTrader
 npm install
 
 # 2. Set up environment
