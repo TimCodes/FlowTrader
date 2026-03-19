@@ -9,6 +9,16 @@
  * - Crude oil (CL): 3 business days before 25th of prior month
  *
  * Contract months use codes: H=Mar, M=Jun, U=Sep, Z=Dec, F=Jan, G=Feb, etc.
+ * 
+ * 
+ *  Contract Definitions:                                                                                                                                                         
+  
+  - ES - E-mini S&P 500 (CME, multiplier 50)
+  - NQ - E-mini Nasdaq 100 (CME, multiplier 20)
+  - MES - Micro E-mini S&P 500 (CME, multiplier 5)
+  - MNQ - Micro E-mini Nasdaq 100 (CME, multiplier 2)
+  - CL - Crude Oil (NYMEX, multiplier 1000)
+
  */
 
 import type { Contract } from "@stoqey/ib";
