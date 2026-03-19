@@ -19,10 +19,34 @@
 // Export types
 export * from "./types.js";
 
-// Export components
-export { KrakenWebSocket, createKrakenWebSocket } from "./websocket.js";
+// Export WebSocket client
+export {
+  KrakenWebSocket,
+  createKrakenWebSocket,
+  createKrakenAuthWebSocket,
+} from "./websocket.js";
 export type { KrakenWebSocketOptions, KrakenWebSocketEvents } from "./websocket.js";
 
+// Export order book (L2)
 export { OrderBook, OrderBookManager, createOrderBookManager } from "./orderbook.js";
 
+// Export trades
 export { TradeHandler, createTradeHandler } from "./trades.js";
+
+// Export L3 handler
+export { L3OrderBook, L3Handler, createL3Handler } from "./l3.js";
+
+// Export Redis publisher
+export {
+  KrakenPublisher,
+  createKrakenPublisher,
+} from "./publisher.js";
+export type { PublisherOptions, PublisherStats } from "./publisher.js";
+
+// Export authentication
+export {
+  getWebSocketToken,
+  TokenManager,
+  createTokenManager,
+} from "./auth.js";
+export type { WebSocketTokenResponse } from "./auth.js";
