@@ -36,7 +36,7 @@ interface QuoteState {
  * - Trade between bid and ask = unknown (likely midpoint trade)
  */
 export class IBKRTradeHandler {
-  private quotes: Map<number, QuoteState> = new Map(); // tickerId -> quote
+  private quotes: Map<string, QuoteState> = new Map(); // symbol -> quote
   private tradeCount: Map<string, number> = new Map(); // symbol -> count
   // Rolling cache to deduplicate tick-by-tick trades per tickerId using a composite key
   // (time, price, size) rather than seconds-only timestamps.
@@ -56,7 +56,13 @@ export class IBKRTradeHandler {
    * Called from bid/ask tick subscription
    */
   updateQuote(data: BidAskTick): void {
-    this.quotes.set(data.tickerId, {
+    const symbol = this.tickerToSymbol.get(data.tickerId);
+    if (!symbol) {
+      // No registered symbol for this tickerId; cannot store quote reliably
+      return;
+    }
+
+    this.quotes.set(symbol, {
       bidPrice: data.bidPrice,
       askPrice: data.askPrice,
       bidSize: data.bidSize,
@@ -69,7 +75,13 @@ export class IBKRTradeHandler {
    * Classify aggressor side based on trade price vs bid/ask
    */
   classifyAggressor(tickerId: number, tradePrice: number): TradeSide {
-    const quote = this.quotes.get(tickerId);
+    const symbol = this.tickerToSymbol.get(tickerId);
+    if (!symbol) {
+      // No symbol mapping for this tickerId; cannot find corresponding quote
+      return "unknown";
+    }
+
+    const quote = this.quotes.get(symbol);
 
     if (!quote) {
       // No quote data available
