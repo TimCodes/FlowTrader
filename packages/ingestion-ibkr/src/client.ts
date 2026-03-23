@@ -395,6 +395,11 @@ export class IBKRClient extends EventEmitter {
         this.resubscribeAll();
       } catch (err) {
         console.error("[IBKR] Reconnect failed:", (err as Error).message);
+        // If reconnect failed, attempt to schedule another reconnect,
+        // respecting maxReconnectAttempts and any closing state.
+        if (!(this as any).isClosing && this.reconnectAttempts < this.maxReconnectAttempts) {
+          this.scheduleReconnect();
+        }
       }
     }, delay);
   }
