@@ -12,6 +12,8 @@
  * Supported contracts: ES, NQ, MES, MNQ, CL
  */
 
+import { pathToFileURL } from "url";
+
 // Re-export all public APIs
 export * from "./types.js";
 export { IBKRClient, createIBKRClient } from "./client.js";
@@ -364,7 +366,7 @@ export async function startIBKRIngestion(
 }
 
 // Default export for direct execution
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const service = new IBKRIngestionService({
     symbols: ["MES", "MNQ"],
     verbose: true,
