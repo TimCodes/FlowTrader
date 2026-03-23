@@ -314,9 +314,26 @@ export class MarketHoursHandler {
       return msUntilSixPM;
     }
 
-    // If holiday, calculate time until next trading day 6PM
-    // This is simplified - proper implementation would check next non-holiday day
-    return 0;
+    // If holiday or other non-weekend, non-maintenance closure,
+    // calculate time until next trading day 6PM ET.
+    // This is simplified - proper implementation would check next non-holiday day.
+    const nowEt = new Date(
+      date.toLocaleString("en-US", { timeZone: "America/New_York" })
+    );
+
+    // Start from the next calendar day in ET.
+    const nextEt = new Date(nowEt);
+    nextEt.setDate(nextEt.getDate() + 1);
+
+    // Skip Saturdays (no Sunday 6PM open derived from a Saturday date).
+    while (nextEt.getDay() === 6) {
+      nextEt.setDate(nextEt.getDate() + 1);
+    }
+
+    // Set target open time to 6PM ET on that day.
+    nextEt.setHours(18, 0, 0, 0);
+
+    return Math.max(0, nextEt.getTime() - nowEt.getTime());
   }
 
   /**
