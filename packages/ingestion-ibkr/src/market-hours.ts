@@ -69,9 +69,13 @@ const CME_HOLIDAYS: CMEHoliday[] = [
 ];
 
 /**
- * Convert a Date to Eastern Time components
+ * Convert a Date to time components in the specified market timezone
+ * (default: US Eastern Time).
  */
-function toEasternTime(date: Date): {
+function toEasternTime(
+  date: Date,
+  timeZone: string = "America/New_York",
+): {
   year: number;
   month: number;
   day: number;
@@ -80,9 +84,9 @@ function toEasternTime(date: Date): {
   dayOfWeek: number;
   dateString: string;
 } {
-  // Use Intl to get ET components
+  // Use Intl to get components in the specified timezone
   const etFormatter = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/New_York",
+    timeZone,
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
