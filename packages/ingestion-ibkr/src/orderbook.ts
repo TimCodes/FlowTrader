@@ -58,13 +58,15 @@ export class IBKROrderBook {
         break;
 
       case "update":
-        // Update existing position
+        // Update existing position, or insert if missing (upsert)
         if (book.has(entry.position)) {
           book.set(entry.position, {
             position: entry.position,
             price: entry.price,
             size: entry.size,
           });
+        } else {
+          this.insertLevel(book, entry.position, entry.price, entry.size);
         }
         break;
 
