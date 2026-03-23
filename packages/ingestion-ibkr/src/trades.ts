@@ -38,6 +38,9 @@ interface QuoteState {
 export class IBKRTradeHandler {
   private quotes: Map<number, QuoteState> = new Map(); // tickerId -> quote
   private tradeCount: Map<string, number> = new Map(); // symbol -> count
+  // Rolling cache to deduplicate tick-by-tick trades per tickerId using a composite key
+  // (time, price, size) rather than seconds-only timestamps.
+  private lastTradeKey: Map<number, string> = new Map(); // tickerId -> dedup key
   private tickerToSymbol: Map<number, string> = new Map();
   private lastTradeTime: Map<number, number> = new Map();
 
@@ -117,12 +120,14 @@ export class IBKRTradeHandler {
       return null;
     }
 
-    // Deduplicate by timestamp (IBKR can send duplicates)
-    const lastTime = this.lastTradeTime.get(data.tickerId);
-    if (lastTime === data.time) {
+    // Deduplicate using a composite key so multiple trades in the same second are not dropped.
+    // IBKR timestamps are in seconds, so use (time, price, size) to distinguish distinct trades.
+    const dedupKey = `${data.time}-${data.price}-${data.size}`;
+    const lastKey = this.lastTradeKey.get(data.tickerId);
+    if (lastKey === dedupKey) {
       return null;
     }
-    this.lastTradeTime.set(data.tickerId, data.time);
+    this.lastTradeKey.set(data.tickerId, dedupKey);
 
     // Classify aggressor
     const side = this.classifyAggressor(data.tickerId, data.price);
@@ -202,6 +207,7 @@ export class IBKRTradeHandler {
     this.tradeCount.clear();
     this.tickerToSymbol.clear();
     this.lastTradeTime.clear();
+    this.lastTradeKey.clear();
   }
 }
 
